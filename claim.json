@@ -1,0 +1,30 @@
+{
+  "claim": {
+    "amount": "1.000 HBD",
+    "memo": "v4v-6cyLX",
+    "invoice": "v4v-6cyLX",
+    "timestamp": "2025-05-19T13:38:39",
+    "business": "redhat4hive",
+    "guides": [
+      {
+        "name": "eco.talent",
+        "percent": "2.50 %",
+        "guidesPercent": "100.00 %",
+        "value": "0.025 HBD"
+      }
+    ],
+    "country": "Colombia",
+    "paymentMethod": "Hive Dollars",
+    "onborder": {
+      "name": "hive.recovery",
+      "percent": "2.5 %",
+      "value": "0.025 HBD"
+    },
+    "percentage": "20.00 %",
+    "claimValue": "0.200 HBD",
+    "transactionAmount": "1.000 HBD",
+    "percentAsPerTransactionAmount": "20.00 %"
+  },
+  "monthly": [],
+  "biweekly": []
+}

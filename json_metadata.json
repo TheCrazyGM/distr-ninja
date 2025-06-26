@@ -1,0 +1,22 @@
+{
+  "app": "distriator/1.0.0",
+  "business_display_name": "hive tshirts guadalajara",
+  "business_name": "hive-tshirts",
+  "claim_percent": "20.00 %",
+  "claim_value": "0.200 HBD",
+  "developer": "sagarkothari88",
+  "format": "markdown",
+  "guides_percent": "2.50",
+  "image": [
+    "https://images.hive.blog/600x0/https://images.hive.blog/1000x0/http://beta-api.distriator.com/uploads/image-1747532370925.jpg",
+    "https://images.hive.blog/600x0/https://images.hive.blog/1000x0/http://beta-api.distriator.com/uploads/image-1747532428559.jpg"
+  ],
+  "invoice_id": "v4v-Vo7FN",
+  "invoice_memo": "v4v-Vo7FN",
+  "spend_hbd_link": "",
+  "tags": ["spendhbd", "distriator", "spendtoearn"],
+  "team": "spknetwork",
+  "total_value": "1.000 HBD",
+  "unique_business_invoice_id": "hive-tshirts-v4v-Vo7FN",
+  "users": ["juan.plata"]
+}
