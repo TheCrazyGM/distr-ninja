@@ -232,9 +232,8 @@ function createClaimCard(claim, index) {
                             </div>
                         </div>
 
-                        ${
-                          claim.guides && claim.guides.length > 0
-                            ? `
+                        ${claim.guides && claim.guides.length > 0
+      ? `
                         <div class="mt-3">
                             <h6 class="mb-2">Guides</h6>
                             <div class="table-responsive">
@@ -249,8 +248,8 @@ function createClaimCard(claim, index) {
                                     </thead>
                                     <tbody>
                                         ${claim.guides
-                                          .map(
-                                            (guide) => `
+        .map(
+          (guide) => `
                                         <tr>
                                             <td>${guide.name}</td>
                                             <td>${guide.percent}</td>
@@ -258,19 +257,18 @@ function createClaimCard(claim, index) {
                                             <td>${guide.value}</td>
                                         </tr>
                                         `,
-                                          )
-                                          .join("")}
+        )
+        .join("")}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         `
-                            : ""
-                        }
+      : ""
+    }
 
-                        ${
-                          claim.onborder
-                            ? `
+                        ${claim.onborder
+      ? `
                         <div class="mt-3">
                             <h6 class="mb-2">Onborder</h6>
                             <div class="table-responsive">
@@ -291,8 +289,8 @@ function createClaimCard(claim, index) {
                             </div>
                         </div>
                         `
-                            : ""
-                        }
+      : ""
+    }
                     </div>
                 </div>
             </div>
@@ -359,48 +357,83 @@ function uploadImage(file, username, easyMDE) {
     return;
   }
 
+  // Following the exact process described in the documentation
   const reader = new FileReader();
-  reader.onload = (event) => {
-    const binary = event.target.result;
-    const buffer = new Uint8Array(binary);
-    const message = {
-      data: buffer,
-    };
+  reader.onload = async (event) => {
+    try {
+      // 1. Get the raw image data as bytes
+      const imageData = new Uint8Array(event.target.result);
 
-    window.hive_keychain.requestSignBuffer(
-      username,
-      JSON.stringify(message),
-      "Posting",
-      (response) => {
-        if (response.success) {
-          const signature = response.result;
-          const formData = new FormData();
-          formData.append("file", file);
+      // 2. Create the challenge string as bytes
+      const textEncoder = new TextEncoder();
+      const challengeBytes = textEncoder.encode("ImageSigningChallenge");
 
-          fetch(`https://images.hive.blog/${username}/${signature}`, {
-            method: "POST",
-            body: formData,
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.url) {
-                const imageUrl = data.url;
-                const markdown = `![${file.name}](${imageUrl})`;
-                const pos = easyMDE.codemirror.getCursor();
-                easyMDE.codemirror.replaceRange(markdown, pos);
-                showToast("Image uploaded successfully!", "success");
-              } else {
-                showToast("Failed to upload image.", "danger");
-              }
+      // 3. Concatenate challenge + image bytes
+      const messageBytes = new Uint8Array(challengeBytes.length + imageData.length);
+      messageBytes.set(challengeBytes, 0);
+      messageBytes.set(imageData, challengeBytes.length);
+
+      // 4. Hash the combined data using SHA-256
+      // 4. Pass the full buffer as a Buffer object to Keychain (no hashing)
+      const bufferObj = {
+        type: "Buffer",
+        data: Array.from(messageBytes)
+      };
+
+      window.hive_keychain.requestSignBuffer(
+        username.toLowerCase(), // Username should be lowercase for the API
+        JSON.stringify(bufferObj),
+        "Posting",
+        (response) => {
+          if (response.success) {
+            console.log("Signature result:", response.result);
+
+            // Get the signature from response
+            const signature = response.result;
+
+            // Create form data with the image file
+            const formData = new FormData();
+            formData.append("file", file);
+
+            // Upload to images.hive.blog with the signature
+            fetch(`https://images.hive.blog/${username.toLowerCase()}/${signature}`, {
+              method: "POST",
+              body: formData,
             })
-            .catch((err) => {
-              showToast(`Image upload failed: ${err}`, "danger");
-            });
-        } else {
-          showToast(`Failed to sign image: ${response.message}`, "danger");
+              .then((res) => {
+                if (!res.ok) {
+                  throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+                }
+                return res.json();
+              })
+              .then((data) => {
+                if (data.url) {
+                  const imageUrl = data.url;
+                  const markdown = `![${file.name}](${imageUrl})`;
+                  const pos = easyMDE.codemirror.getCursor();
+                  easyMDE.codemirror.replaceRange(markdown, pos);
+                  showToast("Image uploaded successfully!", "success");
+                } else {
+                  console.error("Upload response:", data);
+                  showToast("Failed to upload image: No URL in response", "danger");
+                }
+              })
+              .catch((err) => {
+                console.error("Upload error:", err);
+                showToast(`Image upload failed: ${err.message || err}`, "danger");
+              });
+          } else {
+            showToast(`Failed to sign image: ${response.message}`, "danger");
+          }
         }
-      },
-    );
+      );
+    } catch (error) {
+      console.error("Error preparing image for upload:", error);
+      showToast(`Error preparing image: ${error.message}`, "danger");
+    }
+  };
+  reader.onerror = () => {
+    showToast("Could not read the image file", "danger");
   };
   reader.readAsArrayBuffer(file);
 }
