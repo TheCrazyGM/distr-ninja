@@ -529,7 +529,7 @@ To benefit from Distriator and receive discounts on your Hive Dollars purchases:
         permlink: permlink,
         allow_votes: true,
         allow_curation_rewards: true,
-        max_accepted_payout: "1000000.000 HBD",
+        max_accepted_payout: "100000.000 HBD",
         percent_hbd: 10000,
         extensions: [
           [
@@ -557,6 +557,8 @@ To benefit from Distriator and receive discounts on your Hive Dollars purchases:
         showToast("Post created successfully!", "success");
         form.reset();
         form.classList.remove("was-validated");
+        // Restart the workflow: reload claims so user can continue with a fresh state
+        fetchClaimsAndDisplay();
       } else {
         showToast(`Failed to create post: ${response.message}`, "danger");
       }
