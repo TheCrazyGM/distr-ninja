@@ -21,10 +21,10 @@ lint-html:
 	npx prettier --plugin=prettier-plugin-jinja-template --parser=jinja-template --write **/*.html
 
 imports:
-		uv run ruff check --select I --fix 
+		uv run ruff check --select I --fix
 
 format:
-	uv run ruff format 
+	uv run ruff format
 
 git:
 	git push --all
