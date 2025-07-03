@@ -50,7 +50,8 @@ function showUserNav(username) {
 
 function loginAndFetchClaims() {
   const datetimeToSign = getCurrentUTCDateTime();
-  const username = document.getElementById("username").value.trim();
+  // Always treat usernames as lowercase to avoid casing issues
+  const username = document.getElementById("username").value.trim().toLowerCase();
   const status = document.getElementById("status");
 
   if (!username) {
