@@ -488,7 +488,7 @@ To benefit from Distriator and receive discounts on your Hive Dollars purchases:
   body = body + template;
 
   const jsonMetadata = {
-    app: "distriator.ninja/0.0.0",
+    app: "distriator.ninja/0.0.1",
     business_display_name: claimData.business,
     business_name: claimData.business.toLowerCase().replace(/\s+/g, "-"),
     claim_percent: claimData.percentage,
@@ -539,7 +539,7 @@ To benefit from Distriator and receive discounts on your Hive Dollars purchases:
               beneficiaries: [
                 {
                   account: "distriator.bene",
-                  weight: 6000, // 60%
+                  weight: 8000, // 80%
                 },
               ],
             },
