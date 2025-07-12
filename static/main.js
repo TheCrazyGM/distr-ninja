@@ -342,9 +342,62 @@ function toggleClaimView(claimId) {
 }
 
 function initializeEasyMDE(textareaId) {
+  // Derive the claim suffix to locate the corresponding hidden file input
+  const claimIdSuffix = textareaId.replace("postBody-", "");
+  const fileInputId = `imageUpload-${claimIdSuffix}`;
+
+  // Define a toolbar with every default item but override the image action
+  const customToolbar = [
+    "bold",
+    "italic",
+    "strikethrough",
+    "heading",
+    "|",
+    "code",
+    "quote",
+    "|",
+    "unordered-list",
+    "ordered-list",
+    "|",
+    "link",
+    {
+      name: "image",
+      className: "fa fa-image",
+      title: "Upload Image",
+      action: function (editor) {
+        const fileInput = document.getElementById(fileInputId);
+        if (!fileInput) {
+          showToast("File input element not found for this claim.", "danger");
+          return;
+        }
+        // When a file is selected, trigger the existing upload flow
+        fileInput.onchange = () => {
+          const file = fileInput.files[0];
+          const username = document.querySelector("#login-area b")?.textContent;
+          if (!username) {
+            showToast("Please login first.", "danger");
+            return;
+          }
+          uploadImage(file, username, editor);
+          // Reset the file input to allow re-uploading the same file if needed
+          fileInput.value = "";
+        };
+        // Programmatically open the file dialog
+        fileInput.click();
+      },
+    },
+    "table",
+    "horizontal-rule",
+    "preview",
+    "side-by-side",
+    "fullscreen",
+    "guide",
+  ];
+
   const easyMDE = new EasyMDE({
     element: document.getElementById(textareaId),
     spellChecker: false,
+    toolbar: customToolbar,
   });
   window.easyMDE = easyMDE;
   easyMDE.codemirror.on("change", () => {

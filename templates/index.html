@@ -17,6 +17,30 @@
       rel="stylesheet"
       href="https://unpkg.com/easymde/dist/easymde.min.css"
     />
+    <style>
+      /* Keep EasyMDE toolbar on a single line */
+      .EasyMDEContainer .editor-toolbar {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        gap: 0.5rem;
+        overflow-x: auto;
+      }
+      /* Tighten spacing for all toolbar buttons */
+      .EasyMDEContainer .editor-toolbar a,
+      .EasyMDEContainer .editor-toolbar button {
+        margin: 0 4px !important;
+        padding: 0 6px !important;
+      }
+      .EasyMDEContainer .editor-toolbar span.separator {
+        margin: 0 4px !important;
+      }
+      /* Remove auto-push spacing used by EasyMDE for mode buttons */
+      .EasyMDEContainer .editor-toolbar a.no-disable,
+      .EasyMDEContainer .editor-toolbar button.no-disable {
+        margin-left: 0 !important;
+      }
+    </style>
   </head>
 
   <body class="bg-light">
