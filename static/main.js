@@ -608,11 +608,16 @@ To benefit from Distriator and receive discounts on your Hive Dollars purchases:
     "posting",
     (response) => {
       if (response.success) {
-        showToast("Post created successfully!", "success");
+        showToast("Post created successfully! Waiting for blockchain confirmation...", "success");
         form.reset();
         form.classList.remove("was-validated");
-        // Restart the workflow: reload claims so user can continue with a fresh state
-        fetchClaimsAndDisplay();
+        // Show loading spinner while waiting for chain confirmation
+        const container = document.getElementById("claims-container");
+        container.innerHTML = `<div class="text-center my-4"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Waiting...</span></div><p class="mt-2">Waiting for blockchain confirmation...</p></div>`;
+        // Wait ~5 seconds (block time 3s) before refreshing claims
+        setTimeout(() => {
+          fetchClaimsAndDisplay();
+        }, 5000);
       } else {
         showToast(`Failed to create post: ${response.message}`, "danger");
       }
