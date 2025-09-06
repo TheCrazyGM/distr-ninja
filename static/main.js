@@ -9,15 +9,15 @@ function showToast(message, type = "info") {
   const toastContainer = document.getElementById("toast-container");
   const toastId = `toast-${Date.now()}`;
   const toastHTML = `
-          <div id="${toastId}" class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="d-flex">
-              <div class="toast-body">
-                ${message}
-              </div>
-              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-          </div>
-        `;
+<div id="${toastId}" class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+    <div class="toast-body">
+      ${message}
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div>
+`;
   toastContainer.insertAdjacentHTML("beforeend", toastHTML);
   const toastElement = document.getElementById(toastId);
   const toast = new bootstrap.Toast(toastElement);
@@ -29,11 +29,11 @@ function showToast(message, type = "info") {
 
 function showLoginForm() {
   document.getElementById("login-area").innerHTML = `
-                <form class="d-flex align-items-center" id="loginForm" autocomplete="off">
-                    <input type="text" class="form-control me-2" id="username" placeholder="Hive username" autocomplete="username" style="width: 180px;">
-                    <button class="btn btn-primary me-2" id="loginBtn" type="submit">Login & Sign</button>
-                </form>
-            `;
+<form class="d-flex align-items-center" id="loginForm" autocomplete="off">
+  <input type="text" class="form-control me-2" id="username" placeholder="Hive username" autocomplete="username" style="width: 180px;">
+  <button class="btn btn-primary me-2" id="loginBtn" type="submit">Login & Sign</button>
+</form>
+`;
   document.getElementById("loginForm").addEventListener("submit", function (e) {
     e.preventDefault();
     loginAndFetchClaims();
@@ -42,16 +42,19 @@ function showLoginForm() {
 
 function showUserNav(username) {
   document.getElementById("login-area").innerHTML = `
-                <span class="me-3"><i class="fa-solid fa-user"></i> <b>${username}</b></span>
-                <button class="btn btn-outline-secondary btn-sm" id="logoutBtn">Logout</button>
-            `;
+<span class="me-3"><i class="fa-solid fa-user"></i> <b>${username}</b></span>
+<button class="btn btn-outline-secondary btn-sm" id="logoutBtn">Logout</button>
+`;
   document.getElementById("logoutBtn").onclick = logout;
 }
 
 function loginAndFetchClaims() {
   const datetimeToSign = getCurrentUTCDateTime();
   // Always treat usernames as lowercase to avoid casing issues
-  const username = document.getElementById("username").value.trim().toLowerCase();
+  const username = document
+    .getElementById("username")
+    .value.trim()
+    .toLowerCase();
   const status = document.getElementById("status");
 
   if (!username) {
@@ -165,40 +168,40 @@ function formatCurrency(value) {
 // Create a post form for a specific claim
 function createPostForm(claim, claimId) {
   return `
-        <div class="card shadow-sm mb-4" id="post-form-${claimId}">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Create Post for Invoice: ${claim.invoice}</h5>
-                <button class="btn btn-light btn-sm" onclick="toggleClaimView('${claimId}')">Back to Claim</button>
-            </div>
-            <div class="card-body">
-                <form class="needs-validation" novalidate onsubmit="createHivePost(event, '${claimId}')">
-                    <div class="mb-3">
-                        <label for="postTitle-${claimId}" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="postTitle-${claimId}" required>
-                        <div class="invalid-feedback">Please provide a title.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="postBody-${claimId}" class="form-label">Body</label>
-                        <div class="alert alert-info mb-2">
-                            <strong>Important:</strong> Your review must include at least 2 pictures of the product/service to qualify for the claim.
-                            Use markdown image syntax: ![description](image_url)
-                        </div>
-                        <textarea class="form-control" id="postBody-${claimId}" rows="6" required></textarea>
-                        <div class="invalid-feedback">Please provide content for your post.</div>
-                        <div class="form-text">Write your post in Markdown format. Remember to include at least 2 images!</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="imageUpload-${claimId}" class="form-label">Upload Image</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control" id="imageUpload-${claimId}" accept="image/*">
-                            <button class="btn btn-outline-secondary" type="button" onclick="uploadImage(document.getElementById('imageUpload-${claimId}').files[0], document.querySelector('#login-area b').textContent, window.easyMDE)">Upload</button>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Post</button>
-                </form>
-            </div>
+<div class="card shadow-sm mb-4" id="post-form-${claimId}">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h5 class="mb-0">Create Post for Invoice: ${claim.invoice}</h5>
+    <button class="btn btn-light btn-sm" onclick="toggleClaimView('${claimId}')">Back to Claim</button>
+  </div>
+  <div class="card-body">
+    <form class="needs-validation" novalidate onsubmit="createHivePost(event, '${claimId}')">
+      <div class="mb-3">
+        <label for="postTitle-${claimId}" class="form-label">Title</label>
+        <input type="text" class="form-control" id="postTitle-${claimId}" required>
+        <div class="invalid-feedback">Please provide a title.</div>
+      </div>
+      <div class="mb-3">
+        <label for="postBody-${claimId}" class="form-label">Body</label>
+        <div class="alert alert-info mb-2">
+          <strong>Important:</strong> Your review must include at least 2 pictures of the product/service to qualify for the claim.
+          Use markdown image syntax: ![description](image_url)
         </div>
-        `;
+        <textarea class="form-control" id="postBody-${claimId}" rows="6" required></textarea>
+        <div class="invalid-feedback">Please provide content for your post.</div>
+        <div class="form-text">Write your post in Markdown format. Remember to include at least 2 images!</div>
+      </div>
+      <div class="mb-3">
+        <label for="imageUpload-${claimId}" class="form-label">Upload Image</label>
+        <div class="input-group">
+          <input type="file" class="form-control" id="imageUpload-${claimId}" accept="image/*">
+          <button class="btn btn-outline-secondary" type="button" onclick="uploadImage(document.getElementById('imageUpload-${claimId}').files[0], document.querySelector('#login-area b').textContent, window.easyMDE)">Upload</button>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit Post</button>
+    </form>
+  </div>
+</div>
+`;
 }
 
 // Create a claim card
@@ -208,98 +211,100 @@ function createClaimCard(claim, index) {
   const claimId = `claim-${index}`;
 
   return `
-        <div class="claim-container" id="${claimId}">
-            <div class="claim-view">
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Invoice: ${claim.invoice}</h5>
-                        <div>
-                            <span class="badge bg-light text-primary me-2">${claim.amount}</span>
-                            <button class="btn btn-light btn-sm" onclick="toggleClaimView('${claimId}')">Claim</button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <p class="mb-1"><strong>Business:</strong> ${claim.business}</p>
-                                <p class="mb-1"><strong>Country:</strong> ${claim.country}</p>
-                                <p class="mb-1"><strong>Date:</strong> ${formattedDate}</p>
-                                <p class="mb-1"><strong>Payment Method:</strong> ${claim.paymentMethod}</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p class="mb-1"><strong>Claim Value:</strong> ${claim.claimValue}</p>
-                                <p class="mb-1"><strong>Percentage:</strong> ${claim.percentage}</p>
-                                <p class="mb-1"><strong>Transaction Amount:</strong> ${claim.transactionAmount}</p>
-                            </div>
-                        </div>
-
-                        ${claim.guides && claim.guides.length > 0
-      ? `
-                        <div class="mt-3">
-                            <h6 class="mb-2">Guides</h6>
-                            <div class="table-responsive">
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Percent</th>
-                                            <th>Guides Percent</th>
-                                            <th>Value</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${claim.guides
-        .map(
-          (guide) => `
-                                        <tr>
-                                            <td>${guide.name}</td>
-                                            <td>${guide.percent}</td>
-                                            <td>${guide.guidesPercent}</td>
-                                            <td>${guide.value}</td>
-                                        </tr>
-                                        `,
-        )
-        .join("")}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        `
-      : ""
-    }
-
-                        ${claim.onborder
-      ? `
-                        <div class="mt-3">
-                            <h6 class="mb-2">Onborder</h6>
-                            <div class="table-responsive">
-                                <table class="table table-sm">
-                                    <tr>
-                                        <td><strong>Name:</strong></td>
-                                        <td>${claim.onborder.name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Percent:</strong></td>
-                                        <td>${claim.onborder.percent}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>Value:</strong></td>
-                                        <td>${claim.onborder.value}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        `
-      : ""
-    }
-                    </div>
-                </div>
-            </div>
-            <div class="post-form" style="display: none;">
-                ${createPostForm(claim, claimId)}
-            </div>
+<div class="claim-container" id="${claimId}">
+  <div class="claim-view">
+    <div class="card shadow-sm mb-4">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Invoice: ${claim.invoice}</h5>
+        <div>
+          <span class="badge bg-light text-primary me-2">${claim.amount}</span>
+          <button class="btn btn-light btn-sm" onclick="toggleClaimView('${claimId}')">Claim</button>
         </div>
-        `;
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p class="mb-1"><strong>Business:</strong> ${claim.business}</p>
+            <p class="mb-1"><strong>Country:</strong> ${claim.country}</p>
+            <p class="mb-1"><strong>Date:</strong> ${formattedDate}</p>
+            <p class="mb-1"><strong>Payment Method:</strong> ${claim.paymentMethod}</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-1"><strong>Claim Value:</strong> ${claim.claimValue}</p>
+            <p class="mb-1"><strong>Percentage:</strong> ${claim.percentage}</p>
+            <p class="mb-1"><strong>Transaction Amount:</strong> ${claim.transactionAmount}</p>
+          </div>
+        </div>
+
+        ${
+          claim.guides && claim.guides.length > 0
+            ? `
+  <div class="mt-3">
+  <h6 class="mb-2">Guides</h6>
+  <div class="table-responsive">
+  <table class="table table-sm">
+  <thead>
+  <tr>
+  <th>Name</th>
+  <th>Percent</th>
+  <th>Guides Percent</th>
+  <th>Value</th>
+  </tr>
+  </thead>
+  <tbody>
+  ${claim.guides
+    .map(
+      (guide) => `
+                <tr>
+                  <td>${guide.name}</td>
+                  <td>${guide.percent}</td>
+                  <td>${guide.guidesPercent}</td>
+                  <td>${guide.value}</td>
+                </tr>
+                `,
+    )
+    .join("")}
+  </tbody>
+  </table>
+  </div>
+  </div>
+  `
+            : ""
+        }
+
+        ${
+          claim.onborder
+            ? `
+  <div class="mt-3">
+  <h6 class="mb-2">Onborder</h6>
+  <div class="table-responsive">
+  <table class="table table-sm">
+  <tr>
+  <td><strong>Name:</strong></td>
+  <td>${claim.onborder.name}</td>
+  </tr>
+  <tr>
+  <td><strong>Percent:</strong></td>
+  <td>${claim.onborder.percent}</td>
+  </tr>
+  <tr>
+  <td><strong>Value:</strong></td>
+  <td>${claim.onborder.value}</td>
+  </tr>
+  </table>
+  </div>
+  </div>
+  `
+            : ""
+        }
+      </div>
+    </div>
+  </div>
+  <div class="post-form" style="display: none;">
+    ${createPostForm(claim, claimId)}
+  </div>
+</div>
+`;
 }
 
 // Fetch claims and display them on the page
@@ -423,7 +428,9 @@ function uploadImage(file, username, easyMDE) {
       const challengeBytes = textEncoder.encode("ImageSigningChallenge");
 
       // 3. Concatenate challenge + image bytes
-      const messageBytes = new Uint8Array(challengeBytes.length + imageData.length);
+      const messageBytes = new Uint8Array(
+        challengeBytes.length + imageData.length,
+      );
       messageBytes.set(challengeBytes, 0);
       messageBytes.set(imageData, challengeBytes.length);
 
@@ -431,7 +438,7 @@ function uploadImage(file, username, easyMDE) {
       // 4. Pass the full buffer as a Buffer object to Keychain (no hashing)
       const bufferObj = {
         type: "Buffer",
-        data: Array.from(messageBytes)
+        data: Array.from(messageBytes),
       };
 
       window.hive_keychain.requestSignBuffer(
@@ -450,13 +457,18 @@ function uploadImage(file, username, easyMDE) {
             formData.append("file", file);
 
             // Upload to images.hive.blog with the signature
-            fetch(`https://images.hive.blog/${username.toLowerCase()}/${signature}`, {
-              method: "POST",
-              body: formData,
-            })
+            fetch(
+              `https://images.hive.blog/${username.toLowerCase()}/${signature}`,
+              {
+                method: "POST",
+                body: formData,
+              },
+            )
               .then((res) => {
                 if (!res.ok) {
-                  throw new Error(`Server returned ${res.status}: ${res.statusText}`);
+                  throw new Error(
+                    `Server returned ${res.status}: ${res.statusText}`,
+                  );
                 }
                 return res.json();
               })
@@ -469,17 +481,23 @@ function uploadImage(file, username, easyMDE) {
                   showToast("Image uploaded successfully!", "success");
                 } else {
                   console.error("Upload response:", data);
-                  showToast("Failed to upload image: No URL in response", "danger");
+                  showToast(
+                    "Failed to upload image: No URL in response",
+                    "danger",
+                  );
                 }
               })
               .catch((err) => {
                 console.error("Upload error:", err);
-                showToast(`Image upload failed: ${err.message || err}`, "danger");
+                showToast(
+                  `Image upload failed: ${err.message || err}`,
+                  "danger",
+                );
               });
           } else {
             showToast(`Failed to sign image: ${response.message}`, "danger");
           }
-        }
+        },
       );
     } catch (error) {
       console.error("Error preparing image for upload:", error);
@@ -533,9 +551,9 @@ Rewards Claimed: ${claimData.claimValue} (${claimData.percentage} of ${claimData
 To benefit from Distriator and receive discounts on your Hive Dollars purchases:
 
 1. Spend Hive Dollars at listed businesses on Distriator (See business list here - <https://distriator.com/#/businesses>).
-2. Make sure business issues a QR Invoice from v4v.app / Hive-Keychain app.
-3. Go to <https://distriator.com>, log in, follow the instructions, and make your claim.
-`;
+  2. Make sure business issues a QR Invoice from v4v.app / Hive-Keychain app.
+  3. Go to <https://distriator.com>, log in, follow the instructions, and make your claim.
+    `;
 
   // Append template to user's body text
   body = body + template;
@@ -608,7 +626,10 @@ To benefit from Distriator and receive discounts on your Hive Dollars purchases:
     "posting",
     (response) => {
       if (response.success) {
-        showToast("Post created successfully! Waiting for blockchain confirmation...", "success");
+        showToast(
+          "Post created successfully! Waiting for blockchain confirmation...",
+          "success",
+        );
         form.reset();
         form.classList.remove("was-validated");
         // Show loading spinner while waiting for chain confirmation
